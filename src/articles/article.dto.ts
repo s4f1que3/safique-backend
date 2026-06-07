@@ -8,6 +8,9 @@ export class createArticleDTO {
     content: string;
 
     @IsOptional()
+    thumbnail?: Express.Multer.File[];
+
+    @IsOptional()
     images?: Express.Multer.File[];
 
     @IsOptional()
@@ -23,6 +26,9 @@ export class updateArticleDTO {
 
     @IsString()
     new_content: string;
+
+    @IsOptional()
+    new_thumbnail?: Express.Multer.File[];
 
     @IsOptional()
     new_images?: Express.Multer.File[];

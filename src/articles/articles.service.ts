@@ -7,8 +7,14 @@ export class articlesService {
 
     ///// CREATE ARTICLES
 
-    async createArticle(dto: createArticleDTO, uploadedFiles: { images?: Express.Multer.File[], files?: Express.Multer.File[] }) {
+    async createArticle(dto: createArticleDTO, uploadedFiles: { images?: Express.Multer.File[], files?: Express.Multer.File[], thumbnail?: Express.Multer.File[] }) {
         const imageRefs = await Promise.all(
+            (uploadedFiles.images ?? []).map(img =>
+                sanityServiceWithoutPublished.assets.upload('image', img.buffer, { filename: img.originalname })
+            )
+        );
+
+        const thumbnailRefs = await Promise.all(
             (uploadedFiles.images ?? []).map(img =>
                 sanityServiceWithoutPublished.assets.upload('image', img.buffer, { filename: img.originalname })
             )
@@ -34,6 +40,10 @@ export class articlesService {
                 _type: 'image',
                 asset: { _type: 'reference', _ref: asset._id }
             })),
+            thumbnail: thumbnailRefs.map(asset => ({
+                _type: 'image',
+                asset: { _type: 'reference', _ref: asset._id }
+            })),
             Files: fileRefs.map(asset => ({
                 _type: 'file',
                 asset: { _type: 'reference', _ref: asset._id }
@@ -43,8 +53,14 @@ export class articlesService {
 
     //// UPDATE ARTICLES
 
-    async updateArticle(id: string, dto: updateArticleDTO, uploadedFiles: { images?: Express.Multer.File[], files?: Express.Multer.File[] }) {
+    async updateArticle(id: string, dto: updateArticleDTO, uploadedFiles: { images?: Express.Multer.File[], files?: Express.Multer.File[], thumbnail?: Express.Multer.File[] }) {
         const imageRefs = await Promise.all(
+            (uploadedFiles.images ?? []).map(img =>
+                sanityServiceWithoutPublished.assets.upload('image', img.buffer, { filename: img.originalname })
+            )
+        );
+
+        const thumbnailRefs = await Promise.all(
             (uploadedFiles.images ?? []).map(img =>
                 sanityServiceWithoutPublished.assets.upload('image', img.buffer, { filename: img.originalname })
             )
@@ -71,6 +87,10 @@ export class articlesService {
                 _type: 'image',
                 asset: { _type: 'reference', _ref: asset._id }
             })))
+            .append('images', thumbnailRefs.map(asset => ({
+                _type: 'image',
+                asset: { _type: 'reference', _ref: asset._id }
+            })))
             .append('Files', fileRefs.map(asset => ({
                 _type: 'file',
                 asset: { _type: 'reference', _ref: asset._id }
@@ -82,7 +102,9 @@ export class articlesService {
 
     async findAll () {
         try {
-            const articles = await sanityService.fetch('*[_type == "article"]')
+            const articles = await sanityService.fetch(
+                '*[_type == "article"] { ..., "thumbnailUrl": thumbnail[0].asset->url }'
+            )
             return articles
         } catch (error) {
             throw new Error ("Error fetching articles")
@@ -92,11 +114,10 @@ export class articlesService {
     async findBySlug (slug : string) {
         try {
             const article = await sanityService.fetch(
-                '*[_type == "article" && slug.current == $slug][0]', {slug}
+                '*[_type == "article" && slug.current == $slug][0] { ..., "thumbnailUrl": thumbnail[0].asset->url }',
+                {slug}
             )
-
             return article
-
         } catch (error) {
             throw new Error (`Error fetching article ${slug}`)
         }
@@ -105,7 +126,8 @@ export class articlesService {
     async findById (id: string) {
         try {
             const article = await sanityService.fetch(
-                '*[_type == "article" && _id == $id][0]', {id}
+                '*[_type == "article" && _id == $id][0] { ..., "thumbnailUrl": thumbnail[0].asset->url }',
+                {id}
             )
             return article
         } catch (error) {
@@ -154,7 +176,7 @@ export class articlesService {
     async getPinned () {
         try {
             const pinnedArticle = await sanityService.fetch(
-                '*[_type == "article" && pinned == true][0]'
+                '*[_type == "article" && pinned == true][0] { ..., "thumbnailUrl": thumbnail[0].asset->url }'
             )
 
             return pinnedArticle

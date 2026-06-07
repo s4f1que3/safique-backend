@@ -4,8 +4,21 @@ import helmet from 'helmet';
 
 let cachedApp: any;
 
+const ALLOWED_ORIGIN = 'https://joel-frontend.vercel.app';
+
 async function createApp() {
   const app = await NestFactory.create(AppModule);
+
+  app.use((req: any, res: any, next: any) => {
+    res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    if (req.method === 'OPTIONS') {
+      res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,PATCH,OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+      return res.status(204).end();
+    }
+    next();
+  });
 
   app.use(
     helmet({
@@ -34,8 +47,9 @@ async function createApp() {
   );
 
   app.enableCors({
-    origin: ['https://joel-frontend.vercel.app'],
-    methods: ['GET', 'POST', 'DELETE', 'PATCH'],
+    origin: [ALLOWED_ORIGIN],
+    methods: ['GET', 'POST', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });
 

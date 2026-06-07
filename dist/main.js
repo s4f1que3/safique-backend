@@ -9,6 +9,7 @@ const helmet_1 = __importDefault(require("helmet"));
 let cachedApp;
 const ALLOWED_ORIGINS = [
     'https://joel-frontend.vercel.app',
+    'http://loclahost:3001'
 ];
 async function createApp() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);

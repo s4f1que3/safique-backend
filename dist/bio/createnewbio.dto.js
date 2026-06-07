@@ -12,14 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateBioDTO = void 0;
 const class_validator_1 = require("class-validator");
 class UpdateBioDTO {
-    title;
     content;
 }
 exports.UpdateBioDTO = UpdateBioDTO;
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateBioDTO.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)

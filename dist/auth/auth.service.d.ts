@@ -15,6 +15,7 @@ export declare class authService {
     changeEmail(email: string, token: string, dto: newAuthDTO): Promise<{
         user: import("@supabase/auth-js").User;
     }>;
+    refreshSession(refreshToken: string): Promise<import("@supabase/auth-js").Session>;
     changePassword(email: string, token: string, password: string, dto: newAuthDTO): Promise<{
         user: import("@supabase/auth-js").User;
     }>;

@@ -6,6 +6,7 @@ let cachedApp: any;
 
 const ALLOWED_ORIGINS = [
   'https://joel-frontend.vercel.app',
+  'http://loclahost:3001'
 ];
 
 async function createApp() {

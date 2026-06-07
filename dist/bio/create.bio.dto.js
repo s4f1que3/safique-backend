@@ -13,15 +13,10 @@ exports.createBioDTO = void 0;
 const class_validator_1 = require("class-validator");
 class createBioDTO {
     content;
-    title;
 }
 exports.createBioDTO = createBioDTO;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], createBioDTO.prototype, "content", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], createBioDTO.prototype, "title", void 0);
 //# sourceMappingURL=create.bio.dto.js.map

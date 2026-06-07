@@ -9,6 +9,7 @@ export declare class authController {
         weakPassword?: import("@supabase/auth-js").WeakPassword;
     }>;
     signOut(): Promise<void>;
+    refresh(refreshToken: string): Promise<import("@supabase/auth-js").Session>;
     sendOTP(dto: authDTO): Promise<void>;
     verifyOTP(dto: authDTO): Promise<boolean>;
     verifyPassword(dto: authDTO): Promise<boolean>;

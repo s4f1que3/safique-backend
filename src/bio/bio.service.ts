@@ -12,11 +12,10 @@ export class bioService {
             await sanityService.create({
                 _type: 'bio',
                 _id: '23919',
-                title: dto.title,
                 content: dto.content,
                 slug: {
                     _type: 'slug',
-                    current: dto.title
+                    current: 'Bio'
                 },
                 publishedAt: new Date().toLocaleDateString('en-US')
             })
@@ -37,11 +36,10 @@ export class bioService {
             await sanityService
             .patch('23919')
             .set({
-                title: newdto.title,
                 content: newdto.content,
                 slug: {
                     _type: 'slug',
-                    current: newdto.title,
+                    current: 'Bio',
                 },
                 publishedAt: new Date().toLocaleDateString('en-US')
             }).commit()

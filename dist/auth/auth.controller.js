@@ -28,6 +28,9 @@ let authController = class authController {
     async signOut() {
         return this.auth.signOut();
     }
+    async refresh(refreshToken) {
+        return this.auth.refreshSession(refreshToken);
+    }
     async sendOTP(dto) {
         return this.auth.sendOtp(dto.email);
     }
@@ -60,6 +63,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], authController.prototype, "signOut", null);
+__decorate([
+    (0, common_1.Post)('refresh'),
+    (0, common_1.HttpCode)(200),
+    __param(0, (0, common_1.Body)('refresh_token')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], authController.prototype, "refresh", null);
 __decorate([
     (0, common_1.Post)('send-otp'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),

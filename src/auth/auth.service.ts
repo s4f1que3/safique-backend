@@ -79,6 +79,12 @@ export class authService {
         return data
     }
 
+    async refreshSession (refreshToken: string) {
+        const { data, error } = await this.supabase.db.auth.refreshSession({ refresh_token: refreshToken })
+        if (error || !data.session) throw new UnauthorizedException('Invalid refresh token')
+        return data.session
+    }
+
     async changePassword (email: string, token: string, password: string, dto: newAuthDTO) {
         const verifiedOTP = await this.verifyOTP(email, token)
         const verifiedPW = await this.verfiyPassword(email, password)

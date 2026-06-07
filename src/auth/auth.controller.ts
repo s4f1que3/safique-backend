@@ -19,6 +19,12 @@ export class authController {
         return this.auth.signOut()
     }
 
+    @Post('refresh')
+    @HttpCode(200)
+    async refresh (@Body('refresh_token') refreshToken: string) {
+        return this.auth.refreshSession(refreshToken)
+    }
+
     @Post('send-otp')
     @UseGuards(AuthGuard)
     @HttpCode(200)

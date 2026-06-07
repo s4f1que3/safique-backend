@@ -36,9 +36,10 @@ export class articlesController {
         {name: 'images', maxCount: 5},
         {name: 'files', maxCount: 5}
     ]))
-    async updateArticle(@Body() dto: updateArticleDTO, 
+    async updateArticle(
+        @Body() dto: updateArticleDTO,
         @UploadedFiles() UploadedFiles: {images?: Express.Multer.File[], files?: Express.Multer.File[]},
-        id: string
+        @Param('id') id: string
     ) {
         return this.article.updateArticle(id, dto, UploadedFiles)
     }
@@ -51,21 +52,26 @@ export class articlesController {
 
     @Patch('pin/:id')
     @UseGuards(AuthGuard)
-    async pinArticle (id: string) {
+    async pinArticle (@Param('id') id: string) {
         return this.article.pinArticle(id)
     }
 
     @Patch('unpin/:id')
     @UseGuards(AuthGuard)
-    async unpinArticl (id: string) {
+    async unpinArticle (@Param('id') id: string) {
         return this.article.unpinArticle(id)
     }
 
 
     @Delete('delete/:id')
     @UseGuards(AuthGuard)
-    async deleteArticle(id: string) {
+    async deleteArticle(@Param('id') id: string) {
         return this.article.deleteArticle(id)
+    }
+
+    @Get('by-id/:id')
+    async findById (@Param('id') id: string) {
+        return this.article.findById(id)
     }
 
     @Get(':slug')

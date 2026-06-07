@@ -14,7 +14,7 @@ let contactService = class contactService {
         try {
             await sanity_service_1.sanityService.create({
                 _type: 'contact',
-                _id: 43888,
+                _id: '43888',
                 phone: dto.phone,
                 email: dto.email,
                 instagram: dto.instagram,
@@ -26,7 +26,7 @@ let contactService = class contactService {
         }
     }
     async getContact() {
-        const contact = await sanity_service_1.sanityService.fetch('*{_type == "contact"]');
+        const contact = await sanity_service_1.sanityService.fetch('*[_type == "contact"]');
         return contact;
     }
     async updateContact(dto) {

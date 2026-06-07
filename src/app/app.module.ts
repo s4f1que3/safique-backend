@@ -7,16 +7,18 @@ import { bioModule } from 'src/bio/bio.module';
 import { contactModule } from 'src/contact/contact.module';
 import { SupabaseModule } from 'src/supabase/supabase.module';
 import { ConfigModule } from '@nestjs/config';
+import { ResumeModule } from 'src/resume/resume.module';
 
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true}),
-    SupabaseModule, 
-    AuthModule, 
-    ArticleModule, 
-    bioModule, 
-    contactModule],
+    SupabaseModule,
+    AuthModule,
+    ArticleModule,
+    bioModule,
+    contactModule,
+    ResumeModule],
   controllers: [AppController],
   providers: [AppService],
 })

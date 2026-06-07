@@ -34,6 +34,7 @@ export declare class articlesService {
     }): Promise<import("@sanity/client").SanityDocument<Record<string, any>>>;
     findAll(): Promise<any>;
     findBySlug(slug: string): Promise<any>;
+    findById(id: string): Promise<any>;
     pinArticle(id: string): Promise<void>;
     unpinArticle(id: string): Promise<void>;
     getPinned(): Promise<any>;

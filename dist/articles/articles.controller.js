@@ -41,11 +41,14 @@ let articlesController = class articlesController {
     async pinArticle(id) {
         return this.article.pinArticle(id);
     }
-    async unpinArticl(id) {
+    async unpinArticle(id) {
         return this.article.unpinArticle(id);
     }
     async deleteArticle(id) {
         return this.article.deleteArticle(id);
+    }
+    async findById(id) {
+        return this.article.findById(id);
     }
     async findBySlug(slug) {
         return this.article.findBySlug(slug);
@@ -80,6 +83,7 @@ __decorate([
     ])),
     __param(0, (0, common_2.Body)()),
     __param(1, (0, common_2.UploadedFiles)()),
+    __param(2, (0, common_2.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_2.updateArticleDTO, Object, String]),
     __metadata("design:returntype", Promise)
@@ -93,6 +97,7 @@ __decorate([
 __decorate([
     (0, common_2.Patch)('pin/:id'),
     (0, common_2.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_2.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -100,17 +105,26 @@ __decorate([
 __decorate([
     (0, common_2.Patch)('unpin/:id'),
     (0, common_2.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_2.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], articlesController.prototype, "unpinArticl", null);
+], articlesController.prototype, "unpinArticle", null);
 __decorate([
     (0, common_2.Delete)('delete/:id'),
     (0, common_2.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_2.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], articlesController.prototype, "deleteArticle", null);
+__decorate([
+    (0, common_2.Get)('by-id/:id'),
+    __param(0, (0, common_2.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], articlesController.prototype, "findById", null);
 __decorate([
     (0, common_2.Get)(':slug'),
     __param(0, (0, common_2.Param)('slug', article_pipes_1.slugValidationPipe)),

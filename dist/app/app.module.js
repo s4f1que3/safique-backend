@@ -16,6 +16,7 @@ const bio_module_1 = require("../bio/bio.module");
 const contact_module_1 = require("../contact/contact.module");
 const supabase_module_1 = require("../supabase/supabase.module");
 const config_1 = require("@nestjs/config");
+const resume_module_1 = require("../resume/resume.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,7 +28,8 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             article_module_1.ArticleModule,
             bio_module_1.bioModule,
-            contact_module_1.contactModule
+            contact_module_1.contactModule,
+            resume_module_1.ResumeModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

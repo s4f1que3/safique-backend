@@ -75,6 +75,15 @@ let articlesService = class articlesService {
             throw new Error(`Error fetching article ${slug}`);
         }
     }
+    async findById(id) {
+        try {
+            const article = await sanity_service_1.sanityService.fetch('*[_type == "article" && _id == $id][0]', { id });
+            return article;
+        }
+        catch (error) {
+            throw new Error(`Error fetching article ${id}`);
+        }
+    }
     async pinArticle(id) {
         try {
             const existing = await sanity_service_1.sanityService.fetch('*[_type == "article" && pinned == true][0]');
@@ -111,7 +120,7 @@ let articlesService = class articlesService {
     }
     async getPinned() {
         try {
-            const pinnedArticle = await sanity_service_1.sanityService.fetch('*[_type == "article" && pinned === true][0]');
+            const pinnedArticle = await sanity_service_1.sanityService.fetch('*[_type == "article" && pinned == true][0]');
             return pinnedArticle;
         }
         catch (error) {

@@ -102,6 +102,17 @@ export class articlesService {
         }
     }
 
+    async findById (id: string) {
+        try {
+            const article = await sanityService.fetch(
+                '*[_type == "article" && _id == $id][0]', {id}
+            )
+            return article
+        } catch (error) {
+            throw new Error (`Error fetching article ${id}`)
+        }
+    }
+
     ///// PIN ARTICLE
 
     async pinArticle (id: string) {
@@ -143,7 +154,7 @@ export class articlesService {
     async getPinned () {
         try {
             const pinnedArticle = await sanityService.fetch(
-                '*[_type == "article" && pinned === true][0]'
+                '*[_type == "article" && pinned == true][0]'
             )
 
             return pinnedArticle

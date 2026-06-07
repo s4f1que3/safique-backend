@@ -11,7 +11,7 @@ export class bioService {
         try {
             await sanityService.create({
                 _type: 'bio',
-                _id: 23919,
+                _id: '23919',
                 title: dto.title,
                 content: dto.content,
                 slug: {
@@ -27,7 +27,7 @@ export class bioService {
 
     //// GET BIO
     async getBio () {
-        const bio = await sanityService.fetch('*_type == "bio"]')
+        const bio = await sanityService.fetch('*[_type == "bio"]')
         return bio
     }
 

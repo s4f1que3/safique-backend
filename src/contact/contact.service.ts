@@ -9,7 +9,7 @@ export class contactService{
         try {
             await sanityService.create({
                 _type: 'contact',
-                _id: 43888,
+                _id: '43888',
                 phone: dto.phone,
                 email: dto.email,
                 instagram: dto.instagram,
@@ -21,7 +21,7 @@ export class contactService{
     }
 
     async getContact () {
-        const contact = await sanityService.fetch('*{_type == "contact"]')
+        const contact = await sanityService.fetch('*[_type == "contact"]')
         return contact
     }
 

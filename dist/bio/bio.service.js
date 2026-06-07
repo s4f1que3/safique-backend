@@ -14,7 +14,7 @@ let bioService = class bioService {
         try {
             await sanity_service_1.sanityService.create({
                 _type: 'bio',
-                _id: 23919,
+                _id: '23919',
                 title: dto.title,
                 content: dto.content,
                 slug: {
@@ -29,7 +29,7 @@ let bioService = class bioService {
         }
     }
     async getBio() {
-        const bio = await sanity_service_1.sanityService.fetch('*_type == "bio"]');
+        const bio = await sanity_service_1.sanityService.fetch('*[_type == "bio"]');
         return bio;
     }
     async updateBio(newdto) {

@@ -39,7 +39,8 @@ export declare class articlesController {
     }, id: string): Promise<import("@sanity/client").SanityDocument<Record<string, any>>>;
     getPinned(): Promise<any>;
     pinArticle(id: string): Promise<void>;
-    unpinArticl(id: string): Promise<void>;
+    unpinArticle(id: string): Promise<void>;
     deleteArticle(id: string): Promise<void>;
+    findById(id: string): Promise<any>;
     findBySlug(slug: string): Promise<any>;
 }

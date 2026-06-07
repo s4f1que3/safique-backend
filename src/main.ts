@@ -34,7 +34,7 @@ async function createApp() {
   );
 
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+    origin: ['https://joel-frontend.vercel.app'],
     methods: ['GET', 'POST', 'DELETE', 'PATCH'],
     credentials: true,
   });

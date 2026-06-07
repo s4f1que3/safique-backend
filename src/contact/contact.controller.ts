@@ -1,5 +1,5 @@
 import { Controller } from "@nestjs/common";
-import { Get, Post, Patch, Delete, Param, UseGuards } from "@nestjs/common";
+import { Get, Post, Patch, Delete, Body, Query, UseGuards } from "@nestjs/common";
 import { contactService } from "./contact.service";
 import { createContactDTO, createNewContactDTO } from "./contact.dto";
 import { optionValidationPipe } from "./contact.pipes";
@@ -16,19 +16,19 @@ export class contactController {
 
     @Post('create')
     @UseGuards(AuthGuard)
-    async createContact (dto: createContactDTO) {
+    async createContact (@Body() dto: createContactDTO) {
         return this.contact.createContact(dto)
     }
 
     @Patch()
     @UseGuards(AuthGuard)
-    async updateContact (dto: createNewContactDTO) {
+    async updateContact (@Body() dto: createNewContactDTO) {
         return this.contact.updateContact(dto)
     }
 
     @Delete('fields')
     @UseGuards(AuthGuard)
-    async deleteContactFields (@Param('option', optionValidationPipe) option: string) {
+    async deleteContactFields (@Query('option', optionValidationPipe) option: string) {
         return this.contact.deleteContactField(option)
     }
 

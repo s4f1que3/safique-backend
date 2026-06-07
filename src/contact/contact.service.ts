@@ -7,7 +7,7 @@ export class contactService{
 
     async createContact (dto: createContactDTO) {
         try {
-            await sanityService.create({
+            await sanityService.createOrReplace({
                 _type: 'contact',
                 _id: '43888',
                 phone: dto.phone,

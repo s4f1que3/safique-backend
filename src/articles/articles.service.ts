@@ -146,14 +146,10 @@ export class articlesService {
     async pinArticle (id: string) {
         try {
             const existing = await sanityService.fetch('*[_type == "article" && pinned == true][0]')
-            if (existing) {
-                throw new Error ("There's already a pinned article")
-            } else {
-                sanityService.patch(id)
-                .set({
-                    pinned: true
-                }).commit()
+            if (existing && existing._id !== id) {
+                await sanityService.patch(existing._id).set({ pinned: false }).commit()
             }
+            await sanityService.patch(id).set({ pinned: true }).commit()
         } catch (error) {
             throw new Error ("Error pinning article")
         }

@@ -48,6 +48,18 @@ export class uploadedArticleController{
         return this.article.findById(id);
     }
 
+    @Patch('pin/:id')
+    @UseGuards(AuthGuard)
+    async pin(@Param('id') id: string) {
+        return this.article.pin(id);
+    }
+
+    @Patch('unpin/:id')
+    @UseGuards(AuthGuard)
+    async unpin(@Param('id') id: string) {
+        return this.article.unpin(id);
+    }
+
     @Delete()
     @UseGuards(AuthGuard)
     async deleteArticle(@Query('id') id: string) {

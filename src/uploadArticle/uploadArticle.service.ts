@@ -147,6 +147,14 @@ export class uploadArticleService {
         );
     }
 
+    async pin(id: string) {
+        return sanityServiceWithoutPublished.patch(id).set({ pinned: true }).commit();
+    }
+
+    async unpin(id: string) {
+        return sanityServiceWithoutPublished.patch(id).set({ pinned: false }).commit();
+    }
+
     async deleteArticle (id: string) {
             try {
                 await sanityService.delete(id)

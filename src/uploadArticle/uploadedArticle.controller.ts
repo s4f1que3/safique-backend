@@ -14,10 +14,11 @@ export class uploadedArticleController{
     @UseGuards(AuthGuard)
     @UseInterceptors(FileFieldsInterceptor([
         {name: 'article', maxCount: 1},
+        {name: 'thumbnail', maxCount: 1},
         {name: 'images', maxCount: 5},
         {name: 'files', maxCount: 5}
     ]))
-    async createArticle(@Body() dto: uploadArticleDTO, @UploadedFiles() UploadedFiles: {images?: Express.Multer.File[], files?: Express.Multer.File[], article: Express.Multer.File[]}) {
+    async createArticle(@Body() dto: uploadArticleDTO, @UploadedFiles() UploadedFiles: {images?: Express.Multer.File[], files?: Express.Multer.File[], article: Express.Multer.File[], thumbnail?: Express.Multer.File[]}) {
         return this.article.createArticle(dto, UploadedFiles)
     }
 
@@ -25,12 +26,13 @@ export class uploadedArticleController{
     @UseGuards(AuthGuard)
     @UseInterceptors(FileFieldsInterceptor([
         {name: 'article', maxCount: 1},
+        {name: 'thumbnail', maxCount: 1},
         {name: 'images', maxCount: 5},
         {name: 'files', maxCount: 5}
     ]))
     async updateArticle(
         @Body() dto: uploadNewArticleDTO,
-        @UploadedFiles() UploadedFiles: {images?: Express.Multer.File[], files?: Express.Multer.File[], article: Express.Multer.File[]},
+        @UploadedFiles() UploadedFiles: {images?: Express.Multer.File[], files?: Express.Multer.File[], article: Express.Multer.File[], thumbnail?: Express.Multer.File[]},
         @Param('id') id: string
     ) {
         return this.article.updateArticle(id, dto, UploadedFiles, )

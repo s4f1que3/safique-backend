@@ -5,7 +5,7 @@ import { uploadArticleDTO, uploadNewArticleDTO } from "./uploadArticle.dto";
 @Injectable()
 export class uploadArticleService {
 
-    async createArticle(dto: uploadArticleDTO, uploadedFiles: { article: Express.Multer.File[]; images?: Express.Multer.File[]; files?: Express.Multer.File[]; }) {
+    async createArticle(dto: uploadArticleDTO, uploadedFiles: { article: Express.Multer.File[]; images?: Express.Multer.File[]; files?: Express.Multer.File[]; thumbnail?: Express.Multer.File[] }) {
 
         const articleRefs = await Promise.all(
             (uploadedFiles.article ?? []).map(file =>
@@ -25,6 +25,12 @@ export class uploadArticleService {
             )
         );
 
+        const thumbnailRefs = await Promise.all(
+            (uploadedFiles.thumbnail ?? []).map(img =>
+                sanityServiceWithoutPublished.assets.upload('image', img.buffer, { filename: img.originalname })
+            )
+        );
+
         return sanityServiceWithoutPublished.create({
             _type: 'uploaded_article',
             Title: dto.title,
@@ -39,6 +45,11 @@ export class uploadArticleService {
                 current: dto.title
             },
             publishedAt: new Date().toLocaleDateString('en-US'),
+            thumbnail: thumbnailRefs.map(asset => ({
+                _key: crypto.randomUUID(),
+                _type: 'image',
+                asset: { _type: 'reference', _ref: asset._id, _key: crypto.randomUUID() }
+            })),
             Files: fileRefs.map(asset => ({
                 _key: crypto.randomUUID(),
                 _type: 'file',
@@ -52,8 +63,14 @@ export class uploadArticleService {
         })
     }
 
-    async updateArticle(id: string, newDTO: uploadNewArticleDTO ,uploadedFiles: { article?: Express.Multer.File[], images?: Express.Multer.File[], files?: Express.Multer.File[] }) {
+    async updateArticle(id: string, newDTO: uploadNewArticleDTO ,uploadedFiles: { article?: Express.Multer.File[], images?: Express.Multer.File[], files?: Express.Multer.File[], thumbnail?: Express.Multer.File[] }) {
 
+        const thumbnailRefs = await Promise.all(
+            (uploadedFiles.thumbnail ?? []).map(img =>
+                sanityServiceWithoutPublished.assets.upload('image', img.buffer, { filename: img.originalname })
+            )
+        );
+        
         const articleRefs = await Promise.all(
             (uploadedFiles.article ?? []).map(file =>
                 sanityServiceWithoutPublished.assets.upload('file', file.buffer, { filename: file.originalname })
@@ -131,18 +148,30 @@ export class uploadArticleService {
             });
         }
 
+        if (newDTO.remove_thumbnail === 'true') {
+            patchBuilder = patchBuilder.unset(['thumbnail']);
+        } else if (thumbnailRefs.length > 0) {
+            patchBuilder = patchBuilder.set({
+                thumbnail: thumbnailRefs.map(asset => ({
+                    _key: crypto.randomUUID(),
+                    _type: 'image',
+                    asset: { _type: 'reference', _ref: asset._id }
+                }))
+            });
+        }
+
         return patchBuilder.commit();
     }
 
     async findAll() {
         return sanityServiceWithoutPublished.fetch(
-            '*[_type == "uploaded_article"] | order(publishedAt desc) { _id, Title, pinned, publishedAt }'
+            '*[_type == "uploaded_article"] | order(publishedAt desc) { _id, Title, pinned, publishedAt, "thumbnailUrl": thumbnail[0].asset->url }'
         );
     }
 
     async findById(id: string) {
         return sanityServiceWithoutPublished.fetch(
-            '*[_type == "uploaded_article" && _id == $id][0] { ..., "articleUrl": article[0].asset->url, "articleFilename": article[0].asset->originalFilename, "imageItems": images[]{ "url": asset->url }, "fileItems": Files[]{ "url": asset->url, "originalFilename": asset->originalFilename } }',
+            '*[_type == "uploaded_article" && _id == $id][0] { ..., "articleUrl": article[0].asset->url, "articleFilename": article[0].asset->originalFilename, "thumbnailUrl": thumbnail[0].asset->url, "imageItems": images[]{ "url": asset->url }, "fileItems": Files[]{ "url": asset->url, "originalFilename": asset->originalFilename } }',
             { id }
         );
     }

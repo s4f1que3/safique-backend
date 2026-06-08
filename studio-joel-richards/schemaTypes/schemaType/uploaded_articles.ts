@@ -34,6 +34,11 @@ export const uploadedArticlesType = defineType({
             type: 'boolean'
         }),
         defineField({
+            name: 'thumbnail',
+            title: 'Thumbnail',
+            type: 'image'
+        }),
+        defineField({
             name: 'images',
             title: 'images',
             type: 'array',

@@ -30,4 +30,7 @@ export class uploadNewArticleDTO {
     @IsOptional()
     remove_article?: string;
 
+    @IsOptional()
+    remove_thumbnail?: string;
+
 }

@@ -47,7 +47,6 @@ export class authService {
         })
 
         if(error) {
-            console.error('[verifyOTP] error:', error.message)
             return false
         }
 
@@ -72,17 +71,20 @@ export class authService {
     //// send otp will be used for this
 
     async changeEmail (email: string, token: string, dto: newAuthDTO) {
-        const verifiedOTP = await this.verifyOTP(email, token)
-        if(!verifiedOTP) throw new Error('Invalid OTP')
-
-        const { data, error} = await this.supabase.db.auth.updateUser({
-            email: dto.new_email
+        const { data: otpData, error: otpError } = await this.supabase.db.auth.verifyOtp({
+            email: email,
+            token: token,
+            type: 'email'
         })
 
-        if(error) {
-            console.error('[changeEmail] updateUser error:', error.message)
-            throw new Error(error.message)
-        }
+        if(otpError || !otpData.user) throw new Error('Invalid OTP')
+
+        const { data, error } = await this.supabase.db.auth.admin.updateUserById(
+            otpData.user.id,
+            { email: dto.new_email }
+        )
+
+        if(error) throw new Error(error.message)
         return data
 
     }

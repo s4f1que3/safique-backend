@@ -8,8 +8,8 @@ export class uploadArticleService {
     async createArticle(dto: uploadArticleDTO, uploadedFiles: { article: Express.Multer.File[]; images?: Express.Multer.File[]; files?: Express.Multer.File[]; }) {
 
         const articleRefs = await Promise.all(
-            (uploadedFiles.article ?? []).map(img =>
-                sanityServiceWithoutPublished.assets.upload('image', img.buffer, { filename: img.originalname })
+            (uploadedFiles.article ?? []).map(file =>
+                sanityServiceWithoutPublished.assets.upload('file', file.buffer, { filename: file.originalname })
             )
         );
 
@@ -31,7 +31,7 @@ export class uploadArticleService {
             pinned: dto.pinned,
             article: articleRefs.map(asset => ({
                 _key: crypto.randomUUID(),
-                _type: 'image',
+                _type: 'file',
                 asset: { _type: 'reference', _ref: asset._id, _key: crypto.randomUUID() }
             })),
             slug: {
@@ -132,6 +132,12 @@ export class uploadArticleService {
         }
 
         return patchBuilder.commit();
+    }
+
+    async findAll() {
+        return sanityServiceWithoutPublished.fetch(
+            '*[_type == "uploaded_article"] | order(publishedAt desc) { _id, Title, pinned, publishedAt }'
+        );
     }
 
     async findById(id: string) {

@@ -36,6 +36,12 @@ export class uploadedArticleController{
         return this.article.updateArticle(id, dto, UploadedFiles, )
     }
 
+    @Get()
+    @UseGuards(AuthGuard)
+    async getAll() {
+        return this.article.findAll();
+    }
+
     @Get(':id')
     @UseGuards(AuthGuard)
     async getById(@Param('id') id: string) {

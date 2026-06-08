@@ -132,7 +132,7 @@ export class articlesService {
     async findById (id: string) {
         try {
             const article = await sanityService.fetch(
-                '*[_type == "article" && _id == $id][0] { ..., "thumbnailUrl": thumbnail[0].asset->url }',
+                '*[_type == "article" && _id == $id][0] { ..., "thumbnailUrl": thumbnail[0].asset->url, "imageUrls": images[].asset->url, "fileAssets": Files[].asset->{ url, originalFilename } }',
                 {id}
             )
             return article

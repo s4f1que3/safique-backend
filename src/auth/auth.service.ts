@@ -28,7 +28,10 @@ export class authService {
 
     async sendOtp (email: string) {
         const {error} = await this.supabase.db.auth.signInWithOtp({
-            email: email
+            email: email, 
+            options: {
+                shouldCreateUser: false
+            }
         })
 
         if(error) {

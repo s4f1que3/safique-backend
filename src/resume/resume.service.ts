@@ -7,7 +7,7 @@ const RESUME_ID = 'singleton-resume';
 export class resumeService {
 
     async getResume () {
-        return sanityService.fetch('*[_type == "resume"][0]')
+        return sanityService.fetch('*[_type == "resume"][0]{ ..., file { asset-> } }')
     }
 
     async uploadResume (file: Express.Multer.File) {

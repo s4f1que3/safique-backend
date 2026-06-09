@@ -12,6 +12,6 @@ export class slugValidationPipe implements PipeTransform{
             throw new BadRequestException ("Article not found")
         }
 
-        return article
+        return value
     }
 }

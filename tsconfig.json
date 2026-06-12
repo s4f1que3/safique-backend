@@ -1,5 +1,8 @@
 {
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "studio-safique-samuel", "**/*.spec.ts"],
   "compilerOptions": {
+    "rootDir": "./src",
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
@@ -21,6 +24,7 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+    "ignoreDeprecations": "5.0",
     "types": ["node"]
   }
 }

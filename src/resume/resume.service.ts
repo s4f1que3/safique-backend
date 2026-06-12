@@ -10,7 +10,7 @@ export class resumeService {
         return sanityService.fetch('*[_type == "resume"][0]{ ..., file { asset-> } }')
     }
 
-    async uploadResume (file: Express.Multer.File) {
+    async uploadResume (file: any) {
         const asset = await sanityServiceWithoutPublished.assets.upload(
             'file', file.buffer, { filename: file.originalname }
         );

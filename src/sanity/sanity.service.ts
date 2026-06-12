@@ -1,8 +1,9 @@
 import 'dotenv/config';
-import { createClient } from "@sanity/client";
+import { createClient, SanityClient } from "@sanity/client";
 
-export const sanityService = createClient({
-    projectId: 'e1j7g6w9',
+
+export const sanityService  = createClient({
+    projectId: 'ss6xqrwr',
     dataset: 'production',
     useCdn: false,
     perspective: 'published',
@@ -10,10 +11,16 @@ export const sanityService = createClient({
     apiVersion: '2026-03-01'
 })
 
+
+
+
 export const sanityServiceWithoutPublished = createClient({
-    projectId: 'e1j7g6w9',
+    projectId: 'ss6xqrwr',
     dataset: 'production',
     useCdn: false,
     token: process.env.EDITOR_TOKEN,
-    apiVersion: '2026-03-01'
+        apiVersion: '2026-03-01'
 })
+
+
+

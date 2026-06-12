@@ -16,7 +16,7 @@ export class resumeController {
     @Post('upload')
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('file'))
-    async uploadResume (@UploadedFile() file: Express.Multer.File) {
+    async uploadResume (@UploadedFile() file: any) {
         return this.resume.uploadResume(file)
     }
 

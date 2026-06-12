@@ -5,6 +5,7 @@ import { createContactDTO, createNewContactDTO } from "./contact.dto";
 @Injectable()
 export class contactService{
 
+
     async createContact (dto: createContactDTO) {
         try {
             await sanityService.createOrReplace({
@@ -45,5 +46,5 @@ export class contactService{
         await sanityService.delete('43888')
     }
 
-    
+
 }

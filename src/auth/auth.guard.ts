@@ -14,9 +14,10 @@ export class AuthGuard implements CanActivate{
 
         if (!token) throw new UnauthorizedException()
         const { data, error } = await this.supabase.db.auth.getUser(token)
-        console.log('guard error', error)
-        console.log('guard user:', data?.user)
         if (error || !data.user) throw new UnauthorizedException()
+        if(data.user.id !== process.env.OWNER_ID) {
+            throw new UnauthorizedException("You are not allowed in this specific project")
+        }
         
         request.user = data.user
         return true
